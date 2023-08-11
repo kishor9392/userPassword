@@ -33,13 +33,13 @@ initializeDbAndServer();
 
 app.post("/register", async (request, response) => {
   const { username, name, password, gender, location } = request.body;
-  const encrypted = bcrypt.hash(password, 10);
 
   const q1 = `select * from user where username = '${username}';`;
 
   const r1 = await db.get(q1);
 
   if (r1 === undefined) {
+    const encrypted = bcrypt.hash(password, 10);
     const q2 = `INSERT INTO user (username,name,password,gender,location) VALUES 
         ('${username}','${name}','${encrypted}','${gender}','${location}') ;`;
 
@@ -84,7 +84,7 @@ app.post("/login", async (request, response) => {
 
 app.put("/change-password", async (request, response) => {
   const { username, oldPassword, newPassword } = request.body;
-  const encrypted2 = bcrypt.hash(newPassword, 10);
+  const encrypted2 = await bcrypt.hash(newPassword, 10);
 
   const q5 = `select * from user where username = '${username}';`;
   const r5 = await db.get(q5);
