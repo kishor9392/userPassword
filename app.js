@@ -39,7 +39,7 @@ app.post("/register", async (request, response) => {
   const r1 = await db.get(q1);
 
   if (r1 === undefined) {
-    const encrypted = bcrypt.hash(password, 10);
+    const encrypted = await bcrypt.hash(password, 10);
     const q2 = `INSERT INTO user (username,name,password,gender,location) VALUES 
         ('${username}','${name}','${encrypted}','${gender}','${location}') ;`;
 
